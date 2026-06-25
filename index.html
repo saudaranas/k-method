@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuskrip — Pembina Sales Page (K-Method)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --paper-2:#FBFAF6;
+    --ink:#1C1B1A;
+    --ink-soft:#56524C;
+    --ink-faint:#8A857D;
+    --red:#C8443A;
+    --red-deep:#9E2F27;
+    --highlight:#FCE7A1;
+    --rule:#DCD7CB;
+    --rule-strong:#C7C1B3;
+    --ok:#3E7C5A;
+    --display:"Space Grotesk",sans-serif;
+    --body:"Inter",sans-serif;
+    --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--highlight)}
+  a{color:var(--red-deep)}
+
+  /* ---------- Header ---------- */
+  header{
+    border-bottom:2px solid var(--ink);
+    padding:18px 22px 16px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;flex-direction:column;gap:4px}
+  .kicker{
+    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--red-deep);font-weight:700;
+  }
+  h1{
+    font-family:var(--display);font-weight:700;font-size:26px;margin:0;letter-spacing:-.02em;
+  }
+  h1 .pen{
+    background:linear-gradient(transparent 62%, var(--highlight) 62% 92%, transparent 92%);
+    padding:0 2px;
+  }
+  .sub{font-size:13px;color:var(--ink-soft);max-width:52ch}
+  .honest-tag{
+    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ok);
+    border:1.5px solid var(--ok);border-radius:2px;padding:5px 9px;white-space:nowrap;
+    display:flex;align-items:center;gap:6px;
+  }
+  .honest-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+
+  /* ---------- Layout ---------- */
+  .wrap{display:grid;grid-template-columns:360px 1fr;gap:0;align-items:start}
+  .panel{
+    border-right:2px solid var(--ink);
+    padding:22px;position:sticky;top:0;align-self:start;
+    max-height:100vh;overflow-y:auto;
+    background:var(--paper-2);
+  }
+  .stage{padding:24px 26px 90px}
+
+  /* ---------- Form ---------- */
+  .panel h2{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:700;margin:0 0 14px;
+  }
+  .field{margin-bottom:14px}
+  .field label{
+    display:block;font-family:var(--mono);font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:5px;
+  }
+  .field label .opt{color:var(--ink-faint);font-weight:500;text-transform:none;letter-spacing:0}
+  input[type=text],textarea,select{
+    width:100%;font-family:var(--body);font-size:13.5px;color:var(--ink);
+    background:var(--paper);border:1.5px solid var(--rule-strong);border-radius:3px;
+    padding:9px 10px;resize:vertical;transition:border-color .15s,box-shadow .15s;
+  }
+  textarea{min-height:62px;line-height:1.45}
+  input:focus,textarea:focus,select:focus{
+    outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(28,27,26,.08);
+  }
+  .seg{display:flex;border:1.5px solid var(--rule-strong);border-radius:3px;overflow:hidden}
+  .seg button{
+    flex:1;border:0;background:var(--paper);font-family:var(--mono);font-size:12px;font-weight:700;
+    padding:8px;cursor:pointer;color:var(--ink-soft);
+  }
+  .seg button.on{background:var(--ink);color:var(--paper)}
+
+  .btn{
+    font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.03em;
+    border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:11px 14px;border-radius:3px;cursor:pointer;width:100%;
+    transition:transform .08s, background .15s;
+  }
+  .btn:hover{background:#000}
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:rgba(28,27,26,.06)}
+  .btn.red{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.red:hover{background:var(--red-deep)}
+  .panel-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .row2{display:flex;gap:8px}
+  .row2 .btn{flex:1}
+
+  .note{font-size:11.5px;color:var(--ink-faint);margin-top:14px;line-height:1.5}
+
+  /* ---------- Manuscript spine ---------- */
+  .stage-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .stage-head .t{font-family:var(--display);font-weight:600;font-size:18px}
+  .stage-head .meta{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+
+  .ethics{
+    border:1.5px dashed var(--rule-strong);border-radius:4px;padding:12px 14px;margin:14px 0 20px;
+    font-size:12.5px;color:var(--ink-soft);display:none;
+  }
+  .ethics.show{display:block}
+  .ethics.flagged{border-color:var(--red);background:rgba(200,68,58,.05)}
+  .ethics b{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+  .ethics .flag{color:var(--red-deep);font-weight:600}
+  .ethics ul{margin:8px 0 0;padding-left:18px}
+  .ethics li{margin:2px 0}
+
+  .blocks{position:relative;margin-top:8px}
+  .blocks::before{
+    content:"";position:absolute;left:17px;top:8px;bottom:8px;width:2px;background:var(--rule);
+  }
+  .block{position:relative;padding-left:52px;margin-bottom:22px}
+  .num{
+    position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    border:2px solid var(--ink);background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:700;font-size:13px;z-index:2;
+  }
+  .block.done .num{background:var(--ink);color:var(--paper)}
+  .block.busy .num{border-color:var(--red);color:var(--red)}
+  .card{
+    border:1.5px solid var(--rule-strong);border-radius:5px;background:var(--paper-2);
+    overflow:hidden;
+  }
+  .card-head{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:11px 14px;border-bottom:1.5px solid var(--rule);cursor:default;
+  }
+  .card-head .ttl{font-family:var(--display);font-weight:600;font-size:15px}
+  .card-head .hint{font-size:11.5px;color:var(--ink-faint);margin-top:1px}
+  .card-head .left{min-width:0}
+  .card-tools{display:flex;gap:6px;flex-shrink:0}
+  .icon-btn{
+    font-family:var(--mono);font-size:11px;font-weight:700;border:1.5px solid var(--rule-strong);
+    background:var(--paper);color:var(--ink-soft);border-radius:3px;padding:6px 9px;cursor:pointer;
+    white-space:nowrap;transition:all .12s;
+  }
+  .icon-btn:hover{border-color:var(--ink);color:var(--ink)}
+  .icon-btn.go{border-color:var(--red);color:var(--red-deep)}
+  .icon-btn.go:hover{background:var(--red);color:#fff}
+  .card-body{padding:0}
+  .out{
+    width:100%;border:0;background:transparent;font-family:var(--body);font-size:14px;
+    line-height:1.62;color:var(--ink);padding:14px;resize:vertical;min-height:54px;
+    white-space:pre-wrap;
+  }
+  .out:focus{outline:none;background:rgba(252,231,161,.18)}
+  .out.empty{color:var(--ink-faint);font-style:italic}
+  .spin{
+    display:inline-block;width:13px;height:13px;border:2px solid var(--red);border-top-color:transparent;
+    border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px;
+  }
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .err{color:var(--red-deep);font-size:12.5px;padding:0 14px 12px}
+
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12.5px;font-weight:700;
+    padding:11px 18px;border-radius:4px;opacity:0;pointer-events:none;transition:all .25s;z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:880px){
+    .wrap{grid-template-columns:1fr}
+    .panel{position:static;max-height:none;border-right:0;border-bottom:2px solid var(--ink)}
+    .stage{padding:20px 16px 80px}
+    .block{padding-left:46px}
+    .blocks::before{left:15px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="kicker">Pembina Sales Page</span>
+    <h1>Manuskrip <span class="pen">K-Method</span></h1>
+    <p class="sub">Isi konteks produk anda. AI tulis setiap blok ikut rangka direct-response — terus dalam Mod Jujur.</p>
+  </div>
+  <div class="honest-tag">Mod Jujur · Aktif</div>
+</header>
+
+<div class="wrap">
+  <!-- ============ INPUT PANEL ============ -->
+  <aside class="panel">
+    <h2>Konteks Produk</h2>
+
+    <div class="field">
+      <label>Nama produk</label>
+      <input type="text" id="produk" placeholder="cth: Sistem Orderlah">
+    </div>
+    <div class="field">
+      <label>Siapa target (avatar)</label>
+      <textarea id="avatar" placeholder="cth: peniaga kecil WhatsApp yang sibuk rekod order manual, sering tersilap & lupa"></textarea>
+    </div>
+    <div class="field">
+      <label>Masalah utama yang dia hadap</label>
+      <textarea id="masalah" placeholder="cth: order bercampur, kira manual lambat, customer marah bila tersilap"></textarea>
+    </div>
+    <div class="field">
+      <label>Solusi / mekanisme unik anda</label>
+      <textarea id="solusi" placeholder="cth: sistem auto susun order ikut WhatsApp, kira total automatik, hantar resit"></textarea>
+    </div>
+    <div class="field">
+      <label>Bukti SEBENAR <span class="opt">(hasil, pengalaman, testimoni betul)</span></label>
+      <textarea id="bukti" placeholder="Tulis hanya yang BENAR. Kosongkan jika belum ada — AI takkan reka."></textarea>
+    </div>
+    <div class="field">
+      <label>Harga &amp; pakej</label>
+      <textarea id="harga" placeholder="cth: RM30/bulan. Atau 2 pakej: Asas RM30, Pro RM59"></textarea>
+    </div>
+    <div class="field">
+      <label>Bonus <span class="opt">(yang benar-benar diberi)</span></label>
+      <textarea id="bonus" placeholder="cth: template menu percuma, sesi setup 1-1"></textarea>
+    </div>
+    <div class="field">
+      <label>Terma jaminan <span class="opt">(yang boleh ditunaikan)</span></label>
+      <textarea id="jaminan" placeholder="cth: refund 14 hari tanpa soal. Kosongkan jika tiada."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Bahasa</label>
+      <div class="seg" id="lang">
+        <button class="on" data-lang="Bahasa Malaysia santai (gaya netizen)">BM</button>
+        <button data-lang="English (casual, conversational)">EN</button>
+      </div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="btn red" id="genAll">✍️ Tulis Semua Blok</button>
+      <div class="row2">
+        <button class="btn ghost" id="saveBtn">Simpan Draf</button>
+        <button class="btn ghost" id="loadBtn">Buka Draf</button>
+      </div>
+      <button class="btn ghost" id="copyAll">Salin Sales Page Penuh</button>
+    </div>
+    <p class="note">AI jana setiap blok dalam Claude. Setiap blok boleh diedit terus — klik teks dan taip. Tekan butang ✎ pada blok untuk jana semula satu blok sahaja.</p>
+  </aside>
+
+  <!-- ============ MANUSCRIPT STAGE ============ -->
+  <main class="stage">
+    <div class="stage-head">
+      <span class="t">Manuskrip Sales Page</span>
+      <span class="meta" id="status">12 blok · belum dijana</span>
+    </div>
+
+    <div class="ethics" id="ethics">
+      <b>Semakan Jujur</b>
+      <div id="ethicsBody">Belum ada teks untuk disemak.</div>
+    </div>
+
+    <div class="blocks" id="blocks"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   RANGKA K-METHOD — 12 blok (jujukan sebenar sales letter)
+   ========================================================= */
+const BLOCKS = [
+  { id:"headline", no:"01", title:"Eyebrow + Headline", hint:"Spesifik + buang objection besar",
+    task:"Hasilkan satu EYEBROW pendek (label atas, cth 'PRODUK TERBARU DARI...') dan TIGA pilihan HEADLINE. Setiap headline mesti spesifik (guna butiran sebenar bila ada) dan buang objection terbesar pembaca dalam satu nafas (cth 'tanpa perlu...'). Label A) B) C)." },
+  { id:"subhead", no:"02", title:"Sub-headline", hint:"Sokong headline + buang halangan kedua",
+    task:"Tulis SATU sub-headline (1-2 ayat) yang menyokong headline dan menyingkir halangan kedua pembaca." },
+  { id:"lead", no:"03", title:"Pembukaan (panggil avatar)", hint:"Resonance dengan keadaan dia",
+    task:"Tulis perenggan pembukaan yang memanggil avatar terus ('Kalau anda...') dan cerminkan keadaan dia sekarang. 3-5 ayat pendek." },
+  { id:"agitate", no:"04", title:"Agitate Masalah", hint:"Jujur — bukan dramatik melampau",
+    task:"Agitate masalah avatar: sebut realiti & kos masalah itu secara JUJUR. Jangan guna penyakit mental atau rasa malu sebagai umpan. 4-6 ayat pendek." },
+  { id:"solution", no:"05", title:"Solusi + Benefit", hint:"Mekanisme unik + 5-7 benefit",
+    task:"Perkenalkan solusi/mekanisme unik produk, kemudian senaraikan 5-7 BENEFIT sebagai bullet (•). Benefit = hasil yang pembeli alami, bukan ciri teknikal." },
+  { id:"story", no:"06", title:"Origin / Kredibiliti", hint:"Guna fakta sebenar sahaja",
+    task:"Tulis cerita ringkas siapa penjual & kenapa dia layak — guna HANYA fakta dari konteks. Jika bukti kosong, beri 3-4 soalan rangka untuk penjual isi sendiri (jangan reka pencapaian)." },
+  { id:"bullets", no:"07", title:"Fascination Bullets", hint:"Open-loop yang benar-benar dijawab dalam produk",
+    task:"Hasilkan 10-12 fascination bullets (•) gaya open-loop: [hasil/manfaat] + [bukan yang disangka] + [rahsia]. Setiap satu mesti perkara yang BENAR-BENAR ada dalam produk berdasarkan konteks. Jangan janji jumlah pendapatan." },
+  { id:"offer", no:"08", title:"Offer + Anchoring", hint:"Anchor kos/usaha sebenar, bukan nilai rekaan",
+    task:"Susun offer. Mula dengan anchor: kos/usaha/masa sebenar yang penjual laburkan untuk bina ini (bukan nombor 'nilai' rekaan), kemudian nyatakan harga sebenar. Jika ada beberapa pakej, susun & bezakan." },
+  { id:"bonus", no:"09", title:"Bonus Stack", hint:"Bonus sebenar; nilai hanya jika ada harga jual benar",
+    task:"Susun bonus dari konteks. Terangkan manfaat setiap bonus. Letak label 'bernilai RMxx' HANYA jika bonus itu memang ada harga jualan sebenar — jika tidak, terangkan manfaat tanpa label harga." },
+  { id:"guarantee", no:"10", title:"Risk Reversal", hint:"Jaminan yang boleh ditunaikan",
+    task:"Tulis jaminan berdasarkan terma sebenar dari konteks. Mesti jelas & senang dituntut. Jika tiada terma, cadangkan satu jaminan jujur yang munasabah dan tandakan [SAHKAN DULU]." },
+  { id:"urgency", no:"11", title:"Urgency Jujur", hint:"Sebab benar, bukan tarikh palsu",
+    task:"Cipta urgency JUJUR — guna sebab sebenar (kuota, tarikh naik harga sebenar, slot terhad). Jika tiada sebab benar, guna 'kos peluang' (kerugian berterusan masalah itu), bukan tarikh rekaan." },
+  { id:"close", no:"12", title:"Future Pacing + CTA", hint:"Transformasi realistik + ajakan jelas",
+    task:"Future pacing: gambarkan transformasi realistik (lega dari masalah + keadaan lebih baik), elak janji kewangan spesifik. Akhiri dengan CTA jelas dan cadangkan teks butang dalam [kurungan]." }
+];
+
+const ETHICS_RULES = `PERATURAN MOD JUJUR (WAJIB PATUH):
+- JANGAN janji jumlah pendapatan spesifik kepada pembeli (cth "anda akan buat RMx sehari").
+- JANGAN guna "senang je", "copy-paste je", "auto kaya", "tanpa usaha", "dijamin untung".
+- JANGAN reka nombor "bernilai RMxxxx" untuk bonus melainkan ada harga jualan sebenar.
+- JANGAN reka urgency/tarikh palsu atau stok palsu.
+- JANGAN eksploitasi emosi (kemurungan, rasa malu, ketakutan melampau).
+- JANGAN reka testimoni, bukti, atau pencapaian yang tiada dalam konteks.
+- Guna JANJI PROSES (apa yang diajar/dibuat), bukan JANJI HASIL.
+- Spesifik, jujur, dan hormat pembaca.`;
+
+const SYS = (lang) =>
+`Anda copywriter direct-response terbaik. Tulis dalam: ${lang}.
+Ikut gaya sales letter yang menjual tapi BERETIKA.
+${ETHICS_RULES}
+Output: terus kandungan blok sahaja. Tiada pengenalan, tiada penutup, tiada nota meta, tiada tanda pemisah seperti "---".`;
+
+/* =========================================================
+   STATE + ELEMENTS
+   ========================================================= */
+const results = {};
+let lang = "Bahasa Malaysia santai (gaya netizen)";
+const el = (id)=>document.getElementById(id);
+const blocksEl = el("blocks");
+
+/* Build the manuscript spine */
+BLOCKS.forEach(b=>{
+  const node = document.createElement("div");
+  node.className = "block";
+  node.id = "blk-"+b.id;
+  node.innerHTML = `
+    <div class="num">${b.no}</div>
+    <div class="card">
+      <div class="card-head">
+        <div class="left">
+          <div class="ttl">${b.title}</div>
+          <div class="hint">${b.hint}</div>
+        </div>
+        <div class="card-tools">
+          <button class="icon-btn go" data-gen="${b.id}" title="Jana blok ini">✎ Jana</button>
+          <button class="icon-btn" data-copy="${b.id}" title="Salin blok ini">⧉</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="out empty" contenteditable="true" data-out="${b.id}" spellcheck="false">Belum dijana — tekan ✎ Jana atau "Tulis Semua Blok".</div>
+        <div class="err" data-err="${b.id}" style="display:none"></div>
+      </div>
+    </div>`;
+  blocksEl.appendChild(node);
+});
+
+/* =========================================================
+   CONTEXT GATHERING
+   ========================================================= */
+function ctx(){
+  return {
+    produk: el("produk").value.trim(),
+    avatar: el("avatar").value.trim(),
+    masalah: el("masalah").value.trim(),
+    solusi: el("solusi").value.trim(),
+    bukti: el("bukti").value.trim(),
+    harga: el("harga").value.trim(),
+    bonus: el("bonus").value.trim(),
+    jaminan: el("jaminan").value.trim()
+  };
+}
+
+/* =========================================================
+   CLAUDE API CALL
+   ========================================================= */
+async function callClaude(task){
+  const c = ctx();
+  const userMsg =
+`KONTEKS PRODUK (JSON):
+${JSON.stringify(c, null, 2)}
+
+TUGAS BLOK INI:
+${task}
+
+Tulis kandungan blok sahaja, sedia untuk ditampal terus ke sales page.`;
+
+  const res = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      model:"claude-sonnet-4-6",
+      max_tokens:1000,
+      system: SYS(lang),
+      messages:[{ role:"user", content:userMsg }]
+    })
+  });
+  if(!res.ok){
+    let detail = "";
+    try{ detail = (await res.json()).error?.message || ""; }catch(e){}
+    throw new Error("Ralat API ("+res.status+"). "+detail);
+  }
+  const data = await res.json();
+  const text = (data.content||[])
+    .filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
+  if(!text) throw new Error("Tiada teks dikembalikan. Cuba lagi.");
+  return text;
+}
+
+/* =========================================================
+   GENERATE — single & all
+   ========================================================= */
+function need(){
+  const c = ctx();
+  return c.produk && c.avatar && c.masalah && c.solusi;
+}
+
+async function genOne(b){
+  const block = el("blk-"+b.id);
+  const out = blocksEl.querySelector(`[data-out="${b.id}"]`);
+  const errEl = blocksEl.querySelector(`[data-err="${b.id}"]`);
+  errEl.style.display="none"; errEl.textContent="";
+  block.classList.remove("done"); block.classList.add("busy");
+  out.classList.remove("empty");
+  out.innerHTML = `<span class="spin"></span>Sedang menulis…`;
+  try{
+    const text = await callClaude(b.task);
+    results[b.id] = text;
+    out.textContent = text;
+    block.classList.remove("busy"); block.classList.add("done");
+  }catch(e){
+    block.classList.remove("busy");
+    out.classList.add("empty");
+    out.textContent = "Gagal dijana.";
+    errEl.style.display="block";
+    errEl.textContent = e.message;
+  }
+  updateStatus(); runEthics();
+}
+
+async function genAll(){
+  if(!need()){
+    toast("Isi dulu: Nama, Avatar, Masalah, Solusi");
+    return;
+  }
+  const btn = el("genAll");
+  btn.disabled=true; btn.textContent="Menulis manuskrip…";
+  for(const b of BLOCKS){ await genOne(b); }
+  btn.disabled=false; btn.textContent="✍️ Tulis Semula Semua";
+  toast("Manuskrip siap ✓");
+}
+
+/* =========================================================
+   STATUS + ETHICS CHECK
+   ========================================================= */
+function currentText(id){
+  const out = blocksEl.querySelector(`[data-out="${id}"]`);
+  if(out && !out.classList.contains("empty")) return out.textContent.trim();
+  return "";
+}
+
+function updateStatus(){
+  const done = BLOCKS.filter(b=>currentText(b.id)).length;
+  el("status").textContent = `12 blok · ${done} siap`;
+}
+
+const RISKY = [
+  {re:/\bRM\s?\d[\d,]*\s*(sehari|seminggu|sebulan|setahun)/gi, why:"Janji pendapatan spesifik"},
+  {re:/\b(senang je|mudah je|copy[- ]?paste je|auto kaya|tanpa usaha|tanpa buat apa)\b/gi, why:"Bahasa 'tanpa usaha'"},
+  {re:/\b(dijamin untung|pasti kaya|confirm kaya|100%\s*berjaya|mesti berjaya)\b/gi, why:"Jaminan hasil mutlak"},
+  {re:/bernilai\s*RM\s?\d[\d,]*/gi, why:"Label 'nilai' — sahkan ia harga jualan sebenar"},
+  {re:/\b(kemurungan|depression|rasa malu|maruah)\b/gi, why:"Berpotensi eksploitasi emosi"}
+];
+
+function runEthics(){
+  const box = el("ethics");
+  const body = el("ethicsBody");
+  const all = BLOCKS.map(b=>currentText(b.id)).join("\n");
+  if(!all.trim()){ box.classList.remove("show","flagged"); return; }
+  box.classList.add("show");
+
+  const hits=[];
+  RISKY.forEach(r=>{
+    const m = all.match(r.re);
+    if(m){ m.slice(0,4).forEach(x=>hits.push({t:x.trim(), why:r.why})); }
+  });
+
+  if(hits.length===0){
+    box.classList.remove("flagged");
+    body.innerHTML = `<span style="color:var(--ok);font-weight:600">✓ Bersih.</span> Tiada frasa berisiko dikesan. Tetap baca semula bukti & jaminan — pastikan semua benar.`;
+  }else{
+    box.classList.add("flagged");
+    body.innerHTML = `<span class="flag">⚠ ${hits.length} frasa perlu disemak:</span>
+      <ul>${hits.map(h=>`<li><b style="font-family:var(--mono);color:var(--red-deep)">"${escapeHtml(h.t)}"</b> — ${h.why}</li>`).join("")}</ul>
+      <div style="margin-top:8px">Edit blok berkenaan supaya jujur, atau pastikan ia disokong bukti sebenar.</div>`;
+  }
+}
+
+function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+/* =========================================================
+   COPY
+   ========================================================= */
+function copyText(text){
+  if(navigator.clipboard?.writeText){
+    return navigator.clipboard.writeText(text);
+  }
+  const ta=document.createElement("textarea");
+  ta.value=text;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");}catch(e){}
+  ta.remove();return Promise.resolve();
+}
+
+function copyBlock(id){
+  const t = currentText(id);
+  if(!t){ toast("Blok ini kosong"); return; }
+  copyText(t).then(()=>toast("Blok disalin ✓"));
+}
+
+function copyAll(){
+  const parts = BLOCKS.map(b=>{
+    const t = currentText(b.id);
+    return t ? `## ${b.title}\n\n${t}` : null;
+  }).filter(Boolean);
+  if(!parts.length){ toast("Belum ada apa-apa untuk disalin"); return; }
+  const head = `# Sales Page: ${el("produk").value.trim()||"(tanpa nama)"}\n\n`;
+  copyText(head+parts.join("\n\n")).then(()=>toast("Sales page penuh disalin ✓"));
+}
+
+/* =========================================================
+   PERSISTENCE (window.storage — graceful)
+   ========================================================= */
+async function saveDraft(){
+  const data = {
+    fields: ctx(),
+    lang,
+    out: BLOCKS.reduce((o,b)=>{ o[b.id]=currentText(b.id); return o; },{})
+  };
+  try{
+    await window.storage.set("kmethod:draft", JSON.stringify(data));
+    toast("Draf disimpan ✓");
+  }catch(e){
+    toast("Simpan tak tersedia di sini");
+  }
+}
+
+async function loadDraft(){
+  try{
+    const r = await window.storage.get("kmethod:draft");
+    if(!r){ toast("Tiada draf tersimpan"); return; }
+    const data = JSON.parse(r.value);
+    const f = data.fields||{};
+    ["produk","avatar","masalah","solusi","bukti","harga","bonus","jaminan"]
+      .forEach(k=>{ if(el(k)) el(k).value = f[k]||""; });
+    if(data.lang){ lang=data.lang; setLangBtn(); }
+    BLOCKS.forEach(b=>{
+      const t = data.out?.[b.id];
+      const out = blocksEl.querySelector(`[data-out="${b.id}"]`);
+      const block = el("blk-"+b.id);
+      if(t){ out.classList.remove("empty"); out.textContent=t; block.classList.add("done"); results[b.id]=t; }
+    });
+    updateStatus(); runEthics();
+    toast("Draf dibuka ✓");
+  }catch(e){
+    toast("Gagal buka draf");
+  }
+}
+
+function setLangBtn(){
+  document.querySelectorAll("#lang button").forEach(btn=>{
+    btn.classList.toggle("on", btn.dataset.lang===lang);
+  });
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+let toastT;
+function toast(msg){
+  const t=el("toast");t.textContent=msg;t.classList.add("show");
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+el("genAll").addEventListener("click", genAll);
+el("copyAll").addEventListener("click", copyAll);
+el("saveBtn").addEventListener("click", saveDraft);
+el("loadBtn").addEventListener("click", loadDraft);
+
+document.querySelectorAll("#lang button").forEach(btn=>{
+  btn.addEventListener("click",()=>{ lang=btn.dataset.lang; setLangBtn(); });
+});
+
+blocksEl.addEventListener("click",(e)=>{
+  const gen = e.target.closest("[data-gen]");
+  const cp = e.target.closest("[data-copy]");
+  if(gen){
+    if(!need()){ toast("Isi dulu: Nama, Avatar, Masalah, Solusi"); return; }
+    const b = BLOCKS.find(x=>x.id===gen.dataset.gen);
+    genOne(b);
+  }
+  if(cp){ copyBlock(cp.dataset.copy); }
+});
+
+/* edits update status + ethics live */
+blocksEl.addEventListener("input",(e)=>{
+  if(e.target.matches("[data-out]")){
+    e.target.classList.toggle("empty", !e.target.textContent.trim());
+    updateStatus(); runEthics();
+  }
+});
+blocksEl.addEventListener("focusin",(e)=>{
+  if(e.target.matches("[data-out]") && e.target.classList.contains("empty")){
+    e.target.textContent=""; e.target.classList.remove("empty");
+  }
+});
+</script>
+</body>
+</html>
