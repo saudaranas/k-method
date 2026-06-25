@@ -289,17 +289,37 @@ function userPrompt(task){
 }
 function buildPrompt(task){ return `${SYS(lang)}\n\n${userPrompt(task)}`; }
 
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
 async function callClaude(task){
   const ep=(el("endpoint")&&el("endpoint").value.trim())||"https://script.google.com/macros/s/AKfycbyCp_joo_tHX4GCqrIQPlEGQXRO6o4vmqRZeQtjPEngzL7YiQMumZTKrli52Gl55kUbIA/exec";
   if(ep){
     // ---- Backend GAS + Gemini (jalan di mana-mana, termasuk GitHub) ----
-    const res=await fetch(ep,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({system:SYS(lang),prompt:userPrompt(task)})});
-    if(!res.ok)throw new Error("Ralat backend ("+res.status+")");
-    const data=await res.json();
-    if(!data.ok)throw new Error(data.error||"Backend gagal");
-    const t=(data.text||"").trim();if(!t)throw new Error("Tiada teks.");return t;
+    for(let attempt=0;attempt<4;attempt++){
+      try{
+        const res=await fetch(ep,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+          body:JSON.stringify({system:SYS(lang),prompt:userPrompt(task)})});
+        if(!res.ok)throw new Error("Ralat backend ("+res.status+")");
+        const data=await res.json();
+        if(!data.ok)throw new Error(data.error||"Backend gagal");
+        const t=(data.text||"").trim();if(!t)throw new Error("Tiada teks.");return t;
+      }catch(e){
+        const retry=/429|quota|resource_exhausted|rate|503|overload|unavailable|backend \(5/i.test(e.message);
+        if(retry&&attempt<3){ await sleep(6000*(attempt+1)); continue; }
+        throw e;
+      }
+    }
   }
+  // ---- Fallback: API Anthropic (hanya dalam Claude) ----
+  const res=await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:SYS(lang),messages:[{role:"user",content:userPrompt(task)}]})});
+  if(!res.ok){let d="";try{d=(await res.json()).error?.message||"";}catch(e){}throw new Error("Ralat API ("+res.status+"). "+d);}
+  const data=await res.json();
+  const t=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
+  if(!t)throw new Error("Tiada teks. Cuba lagi.");
+  return t;
+}
   // ---- Fallback: API Anthropic (hanya dalam Claude) ----
   const res=await fetch("https://api.anthropic.com/v1/messages",{
     method:"POST",headers:{"Content-Type":"application/json"},
@@ -339,8 +359,13 @@ async function genOne(b){
 async function genAll(){
   if(!need()){toast("Isi: Nama, Avatar, Masalah, Solusi");return;}
   envBlocked=false;
-  const btn=el("genAll");btn.disabled=true;btn.textContent="Menulis manuskrip…";
-  for(const b of BLOCKS){await genOne(b);if(envBlocked)break;}
+  const btn=el("genAll");btn.disabled=true;
+  for(let i=0;i<BLOCKS.length;i++){
+    btn.textContent=`Menulis… (${i+1}/${BLOCKS.length})`;
+    await genOne(BLOCKS[i]);
+    if(envBlocked)break;
+    if(i<BLOCKS.length-1)await sleep(4500); // jeda elak rate limit free tier
+  }
   btn.disabled=false;btn.textContent="✍️ Tulis Semua Blok";
   toast(envBlocked?"Auto tak jalan di sini — guna butang ⧉ Prompt":"Manuskrip siap ✓");
 }
