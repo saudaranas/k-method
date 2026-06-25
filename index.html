@@ -320,16 +320,6 @@ async function callClaude(task){
   if(!t)throw new Error("Tiada teks. Cuba lagi.");
   return t;
 }
-  // ---- Fallback: API Anthropic (hanya dalam Claude) ----
-  const res=await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:SYS(lang),messages:[{role:"user",content:userPrompt(task)}]})});
-  if(!res.ok){let d="";try{d=(await res.json()).error?.message||"";}catch(e){}throw new Error("Ralat API ("+res.status+"). "+d);}
-  const data=await res.json();
-  const t=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
-  if(!t)throw new Error("Tiada teks. Cuba lagi.");
-  return t;
-}
 
 function currentText(id){const o=blocksEl.querySelector(`[data-out="${id}"]`);return(o&&!o.classList.contains("empty"))?o.textContent.trim():"";}
 
